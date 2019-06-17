@@ -7,27 +7,49 @@
     tools:context=".MainActivity">
     <ImageView
         android:id="@+id/img1"
-        android:layout_width="fill_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:adjustViewBounds="true"
-        android:scaleType="fitXY"
+        android:contentDescription="@string/compass"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
         android:src="@drawable/compass" />
+    <TextView
+        android:id="@+id/tv8"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:text="Acceleration readings "
+        android:paddingTop="5dp"
+        android:paddingLeft="50dp"
+        app:layout_constraintTop_toBottomOf="@+id/img1"
+        app:layout_constraintLeft_toRightOf="@id/tv2"/>
+    <TextView
+        android:id="@+id/tv9"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:text="Magnet readings "
+        android:paddingTop="5dp"
+        app:layout_constraintTop_toBottomOf="@+id/img1"/>
     <TextView
         android:id="@+id/tv5"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:text="Xaxis"
-        app:layout_constraintTop_toBottomOf="@+id/img1"
+        android:text="AccelXaxis"
+        android:paddingTop="10dp"
+        android:paddingLeft="50dp"
+        app:layout_constraintTop_toBottomOf="@+id/tv8"
         app:layout_constraintLeft_toRightOf="@id/tv2"/>
     <TextView
         android:id="@+id/tv6"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:text="Zaxis"
+        android:text="AccelZaxis"
+        android:paddingTop="10dp"
+        android:paddingLeft="50dp"
         app:layout_constraintTop_toBottomOf="@+id/tv5"
         app:layout_constraintLeft_toRightOf="@id/tv3"/>
     <TextView
@@ -35,7 +57,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:text="Yaxis"
+        android:text="AccelYaxis"
+        android:paddingTop="10dp"
+        android:paddingLeft="50dp"
         app:layout_constraintTop_toBottomOf="@+id/tv6"
         app:layout_constraintLeft_toRightOf="@id/tv4"/>
     <TextView
@@ -43,15 +67,17 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:text="Pitch"
-        app:layout_constraintTop_toBottomOf="@+id/img1"
+        android:text="MagZaxis"
+        android:padding="5dp"
+        app:layout_constraintTop_toBottomOf="@+id/tv9"
         app:layout_constraintLeft_toLeftOf="parent"/>
     <TextView
         android:id="@+id/tv3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:text="azimuth"
+        android:text="MagXaxis"
+        android:padding="5dp"
         app:layout_constraintTop_toBottomOf="@+id/tv2"
         app:layout_constraintLeft_toLeftOf="parent"/>
     <TextView
@@ -59,8 +85,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:text="roll"
+        android:text="MagYAxis"
+        android:padding="5dp"
         app:layout_constraintTop_toBottomOf="@+id/tv3"
         app:layout_constraintLeft_toLeftOf="parent"/>
-
 </android.support.constraint.ConstraintLayout>
