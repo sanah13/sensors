@@ -1,5 +1,6 @@
 package uk.ac.solent.sensors
 import android.content.Context
+import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.hardware.Sensor
@@ -13,6 +14,7 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
+import android.support.v7.app.AlertDialog
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
@@ -37,22 +39,67 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
     var accel2 = false
     var mag2 = false
 
+    private val TAG = "Permission"
+    private val REQUEST_RECORD_CODE = 1
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        permissionSetting()
+
         image = findViewById(R.id.img1) as ImageView
         sensorManager = getSystemService(SENSOR_SERVICE) as SensorManager
         accel = sensorManager.getDefaultSensor(TYPE_ACCELEROMETER)
         magnet = sensorManager.getDefaultSensor(TYPE_MAGNETIC_FIELD)
-        }
+    }
+    private fun permissionSetting() {
+        val permission= ContextCompat.checkSelfPermission(this, android.Manifest.permission.RECORD_AUDIO)
+        if (permission != PackageManager.PERMISSION_GRANTED) {
 
+            Log.d(TAG, "Permission denied")
+        }
+        if (ActivityCompat.shouldShowRequestPermissionRationale(this, android.Manifest.permission.RECORD_AUDIO)) {
+            val builder = AlertDialog.Builder(this)
+            builder.setMessage("Permission for microphone access is required for this app")
+            builder.setTitle("Permission Required")
+            builder.setPositiveButton("ok")
+            {
+               dialog, which->
+                Log.d(TAG,"Clicked")
+                makeRequest()
+            }
+            makeRequest()
+            val dialog= builder.create()
+            dialog.show()
+        }
+        else {
+            makeRequest()
+        }
+    }
+    private fun makeRequest(){
+        ActivityCompat.requestPermissions(this, arrayOf(android.Manifest.permission.RECORD_AUDIO),REQUEST_RECORD_CODE)
+    }
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        //super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        when(requestCode){
+            REQUEST_RECORD_CODE-> {
+                if (grantResults.isEmpty() || grantResults[0] != PackageManager.PERMISSION_GRANTED)
+                {
+                    Log.d(TAG, "Permission has been denied")
+                }
+                else
+                {
+                    Log.d(TAG, "Permission has been granted")
+                }
+
+            }
+        }
+    }
     override fun onResume() {
         super.onResume()
-
         sensorManager.registerListener(this, accel, SENSOR_DELAY_GAME)
         sensorManager.registerListener(this, magnet, SENSOR_DELAY_GAME)
     }
-
     override fun onPause() {
         super.onPause()
         sensorManager.unregisterListener(this, accel)
@@ -73,12 +120,11 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
             tv4.text = event.values[2].toString()
             magValues = event.values.clone()
         }
-
         if (event.sensor === accel) {
-            lowPass(event.values, accelValues)
+            DegreesInputOutput(event.values, accelValues)
             accel2 = true
         } else if (event.sensor === magnet) {
-            lowPass(event.values, magValues)
+            DegreesInputOutput(event.values, magValues)
             mag2 = true
         }
         if (accel2 && mag2) {
@@ -101,11 +147,10 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
                 SensorManager.getRotationMatrix(orientationMatrix, null, accelValues, magValues)
             }
         }
-    fun lowPass(input: FloatArray, output: FloatArray) {
-        val alpha = 0.05f
-
+    fun DegreesInputOutput (input: FloatArray, output: FloatArray) {
+        val degree = 0.05f
         for (i in input.indices) {
-            output[i] = output[i] + alpha * (input[i] - output[i])
+            output[i] = output[i] + degree * (input[i] - output[i])
         }
     }
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -125,5 +170,7 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
         return true;
     }
 }
+
+
 
 
