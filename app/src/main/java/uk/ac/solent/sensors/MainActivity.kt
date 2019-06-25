@@ -53,12 +53,12 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
         magnet = sensorManager.getDefaultSensor(TYPE_MAGNETIC_FIELD)
     }
     private fun permissionSetting() {
-        val permission= ContextCompat.checkSelfPermission(this, android.Manifest.permission.RECORD_AUDIO)
+        val permission= ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION)
         if (permission != PackageManager.PERMISSION_GRANTED) {
 
             Log.d(TAG, "Permission denied")
         }
-        if (ActivityCompat.shouldShowRequestPermissionRationale(this, android.Manifest.permission.RECORD_AUDIO)) {
+        if (ActivityCompat.shouldShowRequestPermissionRationale(this, android.Manifest.permission.ACCESS_FINE_LOCATION)) {
             val builder = AlertDialog.Builder(this)
             builder.setMessage("Permission for microphone access is required for this app")
             builder.setTitle("Permission Required")
@@ -77,7 +77,7 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
         }
     }
     private fun makeRequest(){
-        ActivityCompat.requestPermissions(this, arrayOf(android.Manifest.permission.RECORD_AUDIO),REQUEST_RECORD_CODE)
+        ActivityCompat.requestPermissions(this, arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION),REQUEST_RECORD_CODE)
     }
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         //super.onRequestPermissionsResult(requestCode, permissions, grantResults)
