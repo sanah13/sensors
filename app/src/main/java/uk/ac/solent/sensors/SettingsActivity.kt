@@ -9,6 +9,9 @@ import android.support.constraint.ConstraintLayout
 import android.view.View
 import android.widget.*
 import kotlinx.android.synthetic.main.activity_settings.*
+import android.graphics.PorterDuff
+
+
 
 class SettingsActivity : AppCompatActivity() {
 
@@ -24,10 +27,6 @@ class SettingsActivity : AppCompatActivity() {
 //            R.id.green -> window.decorView.setBackgroundColor(Color.parseColor(#FFFF00))
 //        }
 //
-        val button = findViewById<Button>(R.id.btn1)
-        button.setOnClickListener {
-            (startActivity(Intent(this@SettingsActivity, MainActivity::class.java)))
-        }
 
     }
 }

@@ -28,11 +28,11 @@ import java.lang.Math.toDegrees
 import java.util.jar.Manifest
 
 class MainActivity : AppCompatActivity(), SensorEventListener {
-    var DegreeValue = 0.0f
+    var DVal = 0.0f
     lateinit var sensorManager: SensorManager
     lateinit var magnet: Sensor
     lateinit var accel: Sensor
-    lateinit var image: ImageView
+    lateinit var img: ImageView
     var accelValues = FloatArray(3)
     var magValues = FloatArray(3)
     var orientationMatrix = FloatArray(16)
@@ -47,7 +47,7 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
         setContentView(R.layout.activity_main)
         permissionSetting()
 
-        image = findViewById(R.id.img1) as ImageView
+        img = findViewById(R.id.img1) as ImageView
         sensorManager = getSystemService(SENSOR_SERVICE) as SensorManager
         accel = sensorManager.getDefaultSensor(TYPE_ACCELEROMETER)
         magnet = sensorManager.getDefaultSensor(TYPE_MAGNETIC_FIELD)
@@ -132,25 +132,23 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
             if (SensorManager.getRotationMatrix(r, null, accelValues, magValues)) {
                 val orientation = FloatArray(3)
                 SensorManager.getOrientation(r, orientation)
-                val degree = (toDegrees(orientation[0].toDouble()) + 360).toFloat() % 360
+                val d = (toDegrees(orientation[0].toDouble()) + 360).toFloat() % 360
 
-                val rotateAnimation = RotateAnimation(
-                        DegreeValue, -degree,
-                        RELATIVE_TO_SELF, 0.5f,
-                        RELATIVE_TO_SELF, 0.5f)
-                rotateAnimation.duration = 1000
-                rotateAnimation.fillAfter = true
+                val rAnimation = RotateAnimation(
+                        DVal, -d,RELATIVE_TO_SELF, 0.5f, RELATIVE_TO_SELF, 0.5f)
+                rAnimation.duration = 1000
+                rAnimation.fillAfter = true
 
-                image.startAnimation(rotateAnimation)
-                DegreeValue = -degree
+                img.startAnimation(rAnimation)
+                DVal = -d
             }
                 SensorManager.getRotationMatrix(orientationMatrix, null, accelValues, magValues)
             }
         }
     fun DegreesInputOutput (input: FloatArray, output: FloatArray) {
         val degree = 0.05f
-        for (i in input.indices) {
-            output[i] = output[i] + degree * (input[i] - output[i])
+        for (d in input.indices) {
+            output[d] = output[d] + degree * (input[d] - output[d])
         }
     }
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
